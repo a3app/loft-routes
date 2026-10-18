@@ -1,0 +1,33 @@
+{
+  "sources": [
+    {
+      "name": "ipverse-as",
+      "git": "https://github.com/ipverse/as-ip-blocks.git",
+      "ref": "master",
+      "sparse": [
+        "as/35673",
+        "as/44653",
+        "as/39433",
+        "as/43601",
+        "as/213146",
+        "as/48502",
+        "as/15549",
+        "as/38980",
+        "as/205155",
+        "as/60330"
+      ],
+      "roots": [
+        {"path": "as/35673/ipv4-aggregated.txt", "via": false, "out": "kz", "service": "Kaspi"},
+        {"path": "as/44653/ipv4-aggregated.txt", "via": false, "out": "kz", "service": "Halyk"},
+        {"path": "as/39433/ipv4-aggregated.txt", "via": false, "out": "kz", "service": "Halyk"},
+        {"path": "as/43601/ipv4-aggregated.txt", "via": false, "out": "kz", "service": "BCC"},
+        {"path": "as/213146/ipv4-aggregated.txt", "via": false, "out": "kz", "service": "Jusan"},
+        {"path": "as/48502/ipv4-aggregated.txt", "via": false, "out": "kz", "service": "Forte"},
+        {"path": "as/15549/ipv4-aggregated.txt", "via": false, "out": "kz", "service": "Egov"},
+        {"path": "as/38980/ipv4-aggregated.txt", "via": false, "out": "by", "service": "Priorbank"},
+        {"path": "as/205155/ipv4-aggregated.txt", "via": false, "out": "by", "service": "NCES"},
+        {"path": "as/60330/ipv4-aggregated.txt", "via": false, "out": "by", "service": "BeCloud"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "sources": [
+    {
+      "name": "rockblack",
+      "git": "https://github.com/RockBlack-VPN/ip-address.git",
+      "ref": "main",
+      "roots": [
+        {"path": "Global", "via": true, "out": "global"},
+        {"path": "RU-RU", "via": false, "out": "ru"}
+      ]
+    },
+    {
+      "name": "chnroutes2",
+      "git": "https://github.com/misakaio/chnroutes2.git",
+      "ref": "master",
+      "roots": [
+        {"path": "chnroutes.txt", "via": false, "out": "cn", "service": "China"}
+      ]
+    },
+    {
+      "name": "iran-ip-ranges",
+      "git": "https://github.com/farshidmousavii/iran-ip-ranges.git",
+      "ref": "main",
+      "roots": [
+        {"path": "dist/raw/ipv4.txt", "via": false, "out": "ir", "service": "Iran"}
+      ]
+    }
+  ]
+}

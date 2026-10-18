@@ -1,0 +1,37 @@
+The generated lists include IP prefixes taken from third-party sources
+listed in tools/sources.json and overlay/sources.json.
+
+RockBlack-VPN/ip-address
+  https://github.com/RockBlack-VPN/ip-address
+  MIT License, Copyright 2024
+  Per-service Keenetic `route ADD` trees (`Global/`, `RU-RU/`).
+  This repository collapses each tree into one list and writes
+  `:: rem <folder>` on each line. Emits `global.bat` and `ru.bat`.
+
+misakaio/chnroutes2
+  https://github.com/misakaio/chnroutes2
+  CC-BY-SA 2.0
+  Mainland China IPv4 prefixes from BGP, updated hourly.
+  Emits `cn.bat` as one service named China.
+  Share-alike applies to the generated China prefixes.
+
+farshidmousavii/iran-ip-ranges
+  https://github.com/farshidmousavii/iran-ip-ranges
+  MIT License
+  Iran IPv4 prefixes announced in RIPE Stat, refreshed every 6 hours.
+  Emits `ir.bat` as one service named Iran.
+
+ipverse/as-ip-blocks
+  https://github.com/ipverse/as-ip-blocks
+  CC0 1.0 Universal
+  BGP-announced IPv4 prefixes by ASN, updated daily.
+  Feeds overlay services that have their own AS (Kaspi, Halyk, BCC,
+  Jusan, Forte, NITEC/Egov, Priorbank, NCES, BeCloud).
+  Emits into `kz.bat` and `by.bat`. Host prefixes on shared ISPs
+  live as files under overlay/kz/ and overlay/by/.
+
+Files under overlay/ are contributed in this repository and keep
+the license of their authors unless a file says otherwise.
+
+Upstream copyright notices are preserved here as required by MIT / CC-BY-SA.
+The converter (tools/convert.py) is original work of a3app.
