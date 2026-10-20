@@ -1938,8 +1938,6 @@ route ADD 118.72.0.0 MASK 255.248.0.0 0.0.0.0 :: rem China
 route ADD 118.80.0.0 MASK 255.254.0.0 0.0.0.0 :: rem China
 route ADD 118.84.0.0 MASK 255.254.0.0 0.0.0.0 :: rem China
 route ADD 118.88.32.0 MASK 255.255.224.0 0.0.0.0 :: rem China
-route ADD 118.88.64.0 MASK 255.255.192.0 0.0.0.0 :: rem China
-route ADD 118.88.128.0 MASK 255.255.128.0 0.0.0.0 :: rem China
 route ADD 118.89.0.0 MASK 255.255.0.0 0.0.0.0 :: rem China
 route ADD 118.102.16.0 MASK 255.255.240.0 0.0.0.0 :: rem China
 route ADD 118.103.164.0 MASK 255.255.252.0 0.0.0.0 :: rem China
@@ -3400,7 +3398,9 @@ route ADD 211.97.160.0 MASK 255.255.248.0 0.0.0.0 :: rem China
 route ADD 211.97.176.0 MASK 255.255.240.0 0.0.0.0 :: rem China
 route ADD 211.97.192.0 MASK 255.255.192.0 0.0.0.0 :: rem China
 route ADD 211.98.0.0 MASK 255.255.0.0 0.0.0.0 :: rem China
-route ADD 211.99.8.0 MASK 255.255.248.0 0.0.0.0 :: rem China
+route ADD 211.99.8.0 MASK 255.255.252.0 0.0.0.0 :: rem China
+route ADD 211.99.12.0 MASK 255.255.255.0 0.0.0.0 :: rem China
+route ADD 211.99.14.0 MASK 255.255.254.0 0.0.0.0 :: rem China
 route ADD 211.99.16.0 MASK 255.255.254.0 0.0.0.0 :: rem China
 route ADD 211.99.25.0 MASK 255.255.255.0 0.0.0.0 :: rem China
 route ADD 211.99.26.0 MASK 255.255.255.0 0.0.0.0 :: rem China

@@ -28,6 +28,11 @@ https://raw.githubusercontent.com/a3app/loft-routes/main/catalog.json
 A loft zone takes one URL: Global uses `global.bat`; Local uses `ru.bat`,
 `cn.bat`, `ir.bat`, `kz.bat`, or `by.bat`. Direction lives on the zone.
 
+Around-loft per-service lists drop prefixes wider than `/16` and well-known
+Cloudflare / Google / Fastly / AWS / GCP supernets. A `kino.pub` or `yandex`
+row that copied `104.16.0.0/12` was sending speedtest and the rest of
+Cloudflare around loft. Country dumps (`cn`, `ir`) stay as published.
+
 Keenetic:
 
 ```

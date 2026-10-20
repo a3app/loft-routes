@@ -25,6 +25,8 @@ https://raw.githubusercontent.com/a3app/loft-routes/main/catalog.json
 
 loft 一个区域只挂一个 URL：Global 用 `global.bat`，Local 用 `ru.bat` / `cn.bat` / `ir.bat` / `kz.bat` / `by.bat`。走 loft 还是直连，写在区域上。
 
+绕过 loft 的按服务列表会丢掉短于 `/16` 的前缀，以及 Cloudflare / Google / Fastly / AWS / GCP 的网段。`yandex`、`kino.pub` 里的 `104.16.0.0/12` 会把 speedtest 和整片 Cloudflare 带出 loft。国家级列表（`cn`、`ir`）保持原样。
+
 Keenetic：
 
 ```

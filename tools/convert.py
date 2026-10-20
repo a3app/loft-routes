@@ -134,6 +134,87 @@ def collapse_cidrs(cidrs: Iterable[str]) -> list[str]:
     return kept
 
 
+# Country BGP dumps (cn, ir) are supposed to be wide. Per-service around-loft
+# lists (ru, kz, by, overlay) must not pin Cloudflare / AWS / Google: a /12
+# there steals speedtest and the rest of the internet from the loft default.
+COUNTRY_DUMPS = {"cn", "ir"}
+AROUND_MIN_PREFIX = 16
+AROUND_DROP = (
+    # Cloudflare
+    "1.0.0.0/24",
+    "1.1.1.0/24",
+    "8.6.112.0/24",
+    "103.21.244.0/22",
+    "103.22.200.0/22",
+    "103.31.4.0/22",
+    "104.16.0.0/13",
+    "104.24.0.0/14",
+    "108.162.192.0/18",
+    "131.0.72.0/22",
+    "141.101.64.0/18",
+    "162.158.0.0/15",
+    "172.64.0.0/13",
+    "173.245.48.0/20",
+    "188.114.96.0/20",
+    "190.93.240.0/20",
+    "197.234.240.0/22",
+    "198.41.128.0/17",
+    # Google
+    "8.8.4.0/24",
+    "8.8.8.0/24",
+    "8.34.208.0/20",
+    "8.35.192.0/20",
+    "64.233.160.0/19",
+    "66.102.0.0/20",
+    "66.249.64.0/19",
+    "72.14.192.0/18",
+    "74.125.0.0/16",
+    "108.177.0.0/17",
+    "142.250.0.0/15",
+    "172.217.0.0/16",
+    "173.194.0.0/16",
+    "209.85.128.0/17",
+    "216.58.192.0/19",
+    "216.239.32.0/19",
+    # Fastly
+    "151.101.0.0/16",
+    "199.232.0.0/16",
+    # AWS / CloudFront / GCP
+    "3.0.0.0/8",
+    "13.32.0.0/12",
+    "13.224.0.0/12",
+    "15.177.0.0/16",
+    "15.188.0.0/16",
+    "18.0.0.0/8",
+    "34.0.0.0/8",
+    "35.0.0.0/8",
+    "44.192.0.0/10",
+    "52.0.0.0/11",
+    "54.0.0.0/8",
+    "99.77.0.0/16",
+    "108.128.0.0/13",
+)
+
+
+def around_drop(cidr: str) -> bool:
+    """True if this prefix is too wide or sits in a global CDN/cloud supernet."""
+    bits = int(cidr.split("/")[1])
+    if bits < AROUND_MIN_PREFIX:
+        return True
+    for s in AROUND_DROP:
+        if covers(s, cidr) or covers(cidr, s):
+            return True
+    return False
+
+
+def scrub_around(b: "Bucket") -> None:
+    """Strip CDN/cloud junk from around-loft per-service lists."""
+    if b.via or b.group in COUNTRY_DUMPS:
+        return
+    kept = [c for c in b.cidrs if not around_drop(c)]
+    b.cidrs = OrderedDict((c, None) for c in kept)
+
+
 def parse_route_line(line: str) -> Optional[tuple[str, str]]:
     """Return (cidr, rem_name) or None."""
     s = line.strip()
@@ -388,7 +469,9 @@ def write_lists(out_dir: Path, buckets: list[Bucket], sources: list[str]) -> Non
     drop_stale(out_dir)
     ordered = sorted(buckets, key=lambda b: (b.group, b.name.lower()))
     for b in ordered:
+        scrub_around(b)
         b.cidrs = OrderedDict((c, None) for c in collapse_cidrs(b.cidrs.keys()))
+    ordered = [b for b in ordered if b.cidrs]
     total = sum(len(b.cidrs) for b in ordered)
     by_group: dict[str, list[Bucket]] = OrderedDict()
     for b in ordered:
@@ -558,6 +641,22 @@ def self_test() -> None:
     assert service_from_rel(Path("Global/ChatGPT(OpenAI)/ChatGPT(OpenAI)_0.0.6.bat")) == "ChatGPT(OpenAI)"
     assert service_from_rel(Path("gosuslugi.bat")) == "gosuslugi"
     assert collapse_cidrs(["142.250.0.0/16", "142.250.1.0/24"]) == ["142.250.0.0/16"]
+    assert around_drop("104.16.0.0/12") is True
+    assert around_drop("104.17.147.0/24") is True
+    assert around_drop("57.0.0.0/8") is True
+    assert around_drop("52.0.0.0/10") is True
+    assert around_drop("142.250.203.0/24") is True
+    assert around_drop("5.255.192.0/18") is False
+    assert around_drop("77.88.0.0/18") is False
+    junk = Bucket("yandex", "rockblack", False, "ru")
+    junk.add("104.16.0.0/12")
+    junk.add("5.255.192.0/18")
+    scrub_around(junk)
+    assert list(junk.cidrs) == ["5.255.192.0/18"]
+    china = Bucket("China", "chnroutes2", False, "cn")
+    china.add("1.0.1.0/8")
+    scrub_around(china)
+    assert list(china.cidrs) == ["1.0.1.0/8"]
     assert prefix_from_mask("255.255.0.0") == 16
     assert mask_from_prefix(16) == "255.255.0.0"
     assert slug_root("RU-RU") == "ru"

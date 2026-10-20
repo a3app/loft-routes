@@ -28,6 +28,11 @@ https://raw.githubusercontent.com/a3app/loft-routes/main/catalog.json
 У зоны loft один URL: Global — `global.bat`, Local — `ru.bat`, `cn.bat`, `ir.bat`, `kz.bat` или `by.bat`.
 Направление живёт у зоны.
 
+В списках «вокруг loft» по сервисам выкидываются префиксы шире `/16` и известные
+суперсети Cloudflare / Google / Fastly / AWS / GCP. Строка `yandex` или
+`kino.pub` с `104.16.0.0/12` уводила speedtest и весь Cloudflare мимо loft.
+Страновые дампы (`cn`, `ir`) как были, так и остаются.
+
 Keenetic:
 
 ```
